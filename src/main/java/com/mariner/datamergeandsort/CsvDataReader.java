@@ -12,15 +12,26 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class CsvDataReader implements DataReader {   
+/**
+ * Class to read CSV data and parse it
+ */
+public class CsvDataReader implements DataReader {
+	
+	/**
+	 * read CSV file and add result to the List
+	 * 
+	 * @return list of results where value of PacketsServiced field greater than 0
+	 */
     public List<ReportsModel> readFile() {
     	List<ReportsModel> dataReportList = new ArrayList<>();
     	
     	try {        
-            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/reports.csv"));
+            Reader reader = Files.newBufferedReader(Paths.get(this.getClass().getClassLoader().getResource("reports.csv").getFile()));
             
             CSVParser csvParser = new CSVParser(reader,
-					CSVFormat.DEFAULT.withFirstRecordAsHeader());
+					CSVFormat.DEFAULT.withFirstRecordAsHeader().withHeader(Reports.CLIENT_ADDRESS.getClientData(), Reports.CLIENT_GUID.getClientData(), 
+							Reports.REQUEST_TIME.getClientData(), Reports.SERVICE_GUID.getClientData(), Reports.RETRIES_REQUEST.getClientData(), 
+							Reports.PACKETS_REQUESTED.getClientData(), Reports.PACKETS_SERVICED.getClientData(),Reports.MAX_HOLE_SIZE.getClientData()));
             
 		for (CSVRecord csvRecord : csvParser) {
 			ReportsModel dataReport = new ReportsModel();

@@ -13,12 +13,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Class to read XML data and parse it
+ */
 public class XmlDataReader implements DataReader {
+	
+	/**
+	 * read XML file and add result to the List
+	 * 
+	 * @return list of results where value of PacketsServiced field greater than 0
+	 */
     public List<ReportsModel> readFile() {
     	List<ReportsModel> dataReportList = new ArrayList<>();
     	
     	try {
-    		File file = new File("src/main/resources/reports.xml");
+    		File file = new File(this.getClass().getClassLoader().getResource("reports.xml").getFile());
     		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     		Document doc = docBuilder.parse(file);
@@ -30,8 +39,7 @@ public class XmlDataReader implements DataReader {
     			Node node = nodeList.item(temp);	
     			if (node.getNodeType() == Node.ELEMENT_NODE) {
 
-    				Element eElement = (Element) node;
-    				
+    				Element eElement = (Element) node;  				
     				ReportsModel dataReport = new ReportsModel();
     				
     				dataReport.setClientAddress(eElement.getElementsByTagName(Reports.CLIENT_ADDRESS.getClientData()).item(0).getTextContent());

@@ -11,12 +11,21 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+/**
+ * Class to read JSON data and parse it
+ */
 public class JsonDataReader implements DataReader {
+	
+	/**
+	 * read JSON file and add result to the List
+	 * 
+	 * @return list of results where value of PacketsServiced field greater than 0
+	 */
     public List<ReportsModel> readFile() {
     	List<ReportsModel> dataReportList = new ArrayList<>();
     	JSONParser parser = new JSONParser();
     	try {
-    		Object obj = parser.parse(new FileReader("src/main/resources/reports.json"));
+    		Object obj = parser.parse(new FileReader(this.getClass().getClassLoader().getResource("reports.json").getFile()));
     		JSONArray jsonArray = (JSONArray) obj;
     			
 			for (Object jsonRecord : jsonArray) {
@@ -34,10 +43,7 @@ public class JsonDataReader implements DataReader {
 				if (dataReport.getPacketsServiced() != 0) {
 					dataReportList.add(dataReport);
 				}
-			}
-  
-            
-               
+			}     
     	} catch (Exception e) {
     		System.out.println(e);
     	}
